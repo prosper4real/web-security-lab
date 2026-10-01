@@ -1,0 +1,28 @@
+Finding: Directory Listing / Information Disclosure
+
+Endpoint: http://localhost:3000/ftp/
+
+Test:
+curl -i http://localhost:3000/ftp/
+
+Result:
+HTTP/1.1 200 OK
+
+The server returned an accessible directory listing containing multiple files
+and directories.
+
+Examples of exposed filenames:
+- incident-support.kdbx
+- package.json.bak
+- package-lock.json.bak
+- suspicious_errors.yml
+- encrypt.pyc
+- announcement_encrypted.md
+
+Impact:
+An exposed directory listing can reveal files, backup files, naming
+conventions, and potentially sensitive information that may assist
+further attacks.
+
+Evidence:
+The HTTP response directly displayed the directory contents.
