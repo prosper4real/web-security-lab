@@ -1,49 +1,55 @@
 # Web Application Security Lab
 
-## Objective
+## Overview
 
-Perform hands-on web application security testing against OWASP Juice Shop, an intentionally vulnerable application, and document reconnaissance results and identified security issues.
+This project demonstrates hands-on web application security testing against **OWASP Juice Shop**, an intentionally vulnerable application. The focus was on reconnaissance, endpoint discovery, and identification of security weaknesses in a controlled local environment.
 
 ## Lab Environment
 
-- Attacker: Kali Linux
-- Application: OWASP Juice Shop
-- Deployment: Docker
-- Target: `http://localhost:3000`
-- Scope: Local intentionally vulnerable application
+| Component              | Details                          |
+|------------------------|----------------------------------|
+| Attacker Machine       | Kali Linux                       |
+| Target Application     | OWASP Juice Shop                 |
+| Deployment             | Docker                           |
+| Target URL             | http://localhost:3000            |
+| Scope                  | Local intentionally vulnerable application |
 
 ## Methodology
 
-1. HTTP response and security-header reconnaissance
-2. Application and JavaScript resource discovery
-3. API endpoint discovery
+1. HTTP response and security header analysis
+2. Client-side JavaScript and application resource discovery
+3. API endpoint enumeration
 4. Authentication and endpoint behavior testing
-5. Web directory/content enumeration
-6. Validation and documentation of security findings
+5. Directory and content enumeration
+6. Validation and documentation of findings
 
-## Reconnaissance
+## Reconnaissance Results
 
-The application was identified as OWASP Juice Shop through its HTML response.
+### Application Identification
+The application was identified as OWASP Juice Shop through analysis of the HTTP response and page content.
 
-The main JavaScript bundle was downloaded and reviewed for application endpoints. Multiple `/api/` and `/rest/` endpoints were identified, including authentication, product, basket, user, and administrative routes.
+### JavaScript & API Endpoint Discovery
+The main JavaScript bundle was downloaded and reviewed. Multiple `/api/` and `/rest/` endpoints were identified, including routes related to:
 
-Evidence:
+- Authentication
+- Products
+- Basket / Cart
+- User management
+- Administrative functions
 
+**Evidence:**
 - `scans/http-headers.txt`
 - `scans/homepage-response.txt`
 - `scans/api-endpoint-discovery.txt`
 - `scans/main.js`
 
-## Security Finding
+## Key Security Finding
 
 ### Directory Listing / Information Disclosure
 
-**Endpoint:**
-`http://localhost:3000/ftp/`
+**Endpoint:** `http://localhost:3000/ftp/`
 
-The `/ftp/` endpoint returned an accessible directory listing containing multiple files and directories.
-
-Examples observed included:
+The `/ftp/` endpoint returned a publicly accessible directory listing containing multiple files, including:
 
 - `incident-support.kdbx`
 - `package.json.bak`
@@ -52,34 +58,42 @@ Examples observed included:
 - `encrypt.pyc`
 - `announcement_encrypted.md`
 
-### Impact
+**Impact:**  
+Exposed directory listings can reveal filenames, backup files, application structure, and potentially sensitive information that may assist further attacks.
 
-Exposed directory listings can disclose filenames, backup files, application structure, and potentially sensitive information that may assist further attacks.
-
-### Evidence
-
+**Evidence:**
 - `findings/directory-listing.txt`
 - `scans/directory-listing.txt`
 
-## Additional Testing
+## Additional Testing Performed
 
-The following tests were also performed:
+The following tests were also conducted:
 
-- Unauthenticated `/rest/user/whoami` request
-- Invalid login request
+- Unauthenticated request to `/rest/user/whoami`
+- Invalid login attempts
 - Product search endpoint testing
-- Basic input testing against the product search endpoint
-- JavaScript/API endpoint discovery
+- Basic input testing against the search functionality
+- Review of client-side JavaScript for endpoint exposure
 
-These tests were documented without treating normal application behavior as vulnerabilities where no evidence of a security issue was observed.
+Normal application behavior was not treated as a vulnerability where no clear security impact was observed.
 
 ## Lessons Learned
 
-- Web applications expose useful information through HTTP responses and client-side JavaScript.
-- Endpoint discovery can reveal the application's attack surface.
-- Directory listings can expose files that should not be publicly accessible.
-- Security findings should be validated and supported with reproducible evidence.
+- Web applications frequently expose useful information through HTTP responses and client-side JavaScript
+- Systematic endpoint discovery helps map the application’s attack surface
+- Directory listings can unintentionally expose sensitive or useful files
+- Findings should always be validated and supported with reproducible evidence
+
+## Skills Demonstrated
+
+- Web application reconnaissance
+- HTTP header and technology analysis
+- Client-side JavaScript review
+- API endpoint discovery
+- Directory enumeration
+- Manual verification of findings
+- Clear documentation of security issues
 
 ## Disclaimer
 
-This project was performed against an intentionally vulnerable OWASP Juice Shop instance running locally for educational and portfolio purposes. No unauthorized systems were targeted.
+This project was performed against a locally hosted, intentionally vulnerable OWASP Juice Shop instance for educational and portfolio purposes only. No unauthorized systems were targeted.
